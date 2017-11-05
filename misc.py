@@ -11,7 +11,9 @@ import hashlib
 import http.client
 import json
 import urllib
+import configparser
 
+'''签名'''
 def buildSign(params, secretKey):
     sign = ''
     for key in sorted(params.keys()):
@@ -19,6 +21,7 @@ def buildSign(params, secretKey):
     data = sign + 'secret_key=' + secretKey
     return hashlib.md5(data.encode('utf-8')).hexdigest().upper()
 
+'''get请求'''
 def httpGet(url, resource, params=''):
     conn = http.client.HTTPSConnection(url, timeout=10)
     conn.request('GET', resource + '?' + params)
@@ -26,6 +29,7 @@ def httpGet(url, resource, params=''):
     data = response.read().decode('utf-8')
     return json.loads(data)
 
+'''post请求'''
 def httpPost(url, resource, params):
     headers = {
             'Content-type': 'application/x-www-form-urlencoded'
@@ -38,3 +42,20 @@ def httpPost(url, resource, params):
     params.clear()
     conn.close()
     return data
+
+'''读取配置文件的key所对应的value'''
+def getConfigKey(fileName, section, keyName):
+    conf = configparser.ConfigParser()
+    conf.read(fileName)
+    keyValue = conf.get(section, keyName)
+    if keyValue:
+        return keyValue
+    else:
+        return
+
+'''设置keyName和keyValue到配置文件，比较粗糙，没有用try、catch等等'''
+def setConfigKey(fileName, section, keyName, keyValue):
+    conf = configparser.ConfigParser()
+    conf.read(fileName)
+    conf.set(section, keyName, keyValue)
+    conf.write(open(fileName,'w'))

@@ -16,17 +16,17 @@ okexRESTURL = 'www.okex.com'
 #现货API
 okexSpot = OkexSpot(okexRESTURL,apikey,secretkey)
 
-#print (u' 现货行情 ')
-#print (okexSpot.ticker('btc_usd'))
+print (u' 现货行情 ')
+print (okexSpot.ticker('btc_usdt'))
 
 #print (u' 现货深度 ')
 #print (okexSpot.depth('btc_usd'))
 
-print (u' 现货历史交易信息 ')
-print (okexSpot.trades('btc_usdt'))
+#print (u' 现货历史交易信息 ')
+#print (okexSpot.trades('btc_usdt'))
 
-print (u' 用户现货账户信息 ')
-print (okexSpot.userinfo())
+#print (u' 用户现货账户信息 ')
+#print (okexSpot.userinfo())
 
 #print (u' 现货下单 ')
 #print (okexSpot.trade('ltc_usd','buy','0.1','0.2'))
