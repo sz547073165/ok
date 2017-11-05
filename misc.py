@@ -50,7 +50,7 @@ def httpPost(url, resource, params):
 '''读取配置文件的key所对应的value'''
 def getConfigKeyValueByKeyName(fileName, section, keyName):
     conf = configparser.ConfigParser()
-    conf.read(fileName)
+    conf.read(fileName, 'utf-8')
     keyValue = conf.get(section, keyName)
     if keyValue:
         return keyValue
