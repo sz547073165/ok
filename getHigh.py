@@ -6,10 +6,14 @@ Created on Sat Nov  4 10:38:01 2017
 @author: Marco
 """
 
-from person import apikey ,secretkey, mailHost, mailUser, mailPass, receivers
+from person import apikey ,secretkey, mailPass
 import misc
 from okexSpotAPI import OkexSpot
 import time
+
+mailHost = misc.getConfigKeyValueByKeyName('config.ini', 'mail', 'mailHost')
+mailUser = misc.getConfigKeyValueByKeyName('config.ini', 'mail', 'mailUser')
+receivers = misc.getConfigKeyValueByKeyName('config.ini', 'mail', 'receivers').split(',')
 
 okexSpot = OkexSpot(apikey, secretkey)
 symbol = 'btc_usdt'
@@ -19,6 +23,7 @@ highValue = misc.getConfigKeyValueByKeyName('config.ini', 'ticker', 'high')
 while True:
     ticker = okexSpot.ticker(symbol)
     high = ticker['ticker']['high']
+    print(ticker)
     if high > highValue:
         content = '<html>'
         content += '<p>返回数据时服务器时间：%s</p>' % misc.getTimeStrWithUnixTimestamp(int(ticker['date']))
@@ -29,7 +34,6 @@ while True:
         content += '<p>卖一价：%s</p>' % ticker['ticker']['sell']
         content += '<p>成交量(最近的24小时)：%s</p>' % ticker['ticker']['vol']
         content += '</html>'
-        print(high)
         highValue = high
         misc.setConfigKeyValue('config.ini', 'ticker', 'high', high)
         misc.sendEmail(mailHost, mailUser, mailPass, receivers, 'BTC_USDT最新最高价', content)
