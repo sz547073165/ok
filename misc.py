@@ -12,6 +12,10 @@ import http.client
 import json
 import urllib
 import configparser
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+import time
 
 '''签名'''
 def buildSign(params, secretKey):
@@ -44,7 +48,7 @@ def httpPost(url, resource, params):
     return data
 
 '''读取配置文件的key所对应的value'''
-def getConfigKey(fileName, section, keyName):
+def getConfigKeyValueByKeyName(fileName, section, keyName):
     conf = configparser.ConfigParser()
     conf.read(fileName)
     keyValue = conf.get(section, keyName)
@@ -54,8 +58,33 @@ def getConfigKey(fileName, section, keyName):
         return
 
 '''设置keyName和keyValue到配置文件，比较粗糙，没有用try、catch等等'''
-def setConfigKey(fileName, section, keyName, keyValue):
+def setConfigKeyValue(fileName, section, keyName, keyValue):
     conf = configparser.ConfigParser()
     conf.read(fileName)
     conf.set(section, keyName, keyValue)
     conf.write(open(fileName,'w'))
+
+'''发送邮件'''
+def sendEmail(mailHost, mailUser, mailPass, receivers, subject, content):
+    email_client = smtplib.SMTP(mailHost, 25)
+    email_client.login(mailUser, mailPass)
+    # create msg
+    try:
+        msg = MIMEText(content, 'HTML', 'utf-8')
+        msg['Subject'] = Header(subject, 'utf-8')  # subject
+        msg['From'] = mailUser
+        msg['To'] = ','.join(receivers)
+        email_client.sendmail(mailUser, receivers, msg.as_string())
+        print('邮件发送成功，目标：%s' % receivers)
+    except Exception as e:
+        print('邮件发送失败，原因：%s' % e)
+    finally:
+        email_client.quit()
+
+'''获取当前时间'''
+def getTimeStr():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+'''获取当前时间'''
+def getTimeStrWithUnixTimestamp(unixTimestamp):
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(unixTimestamp))

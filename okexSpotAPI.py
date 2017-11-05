@@ -10,7 +10,7 @@ from misc import buildSign,httpGet,httpPost
 
 class OkexSpot:
 
-    def __init__(self,url,apikey,secretkey):
+    def __init__(self,apikey,secretkey,url='www.okex.com'):
         self.__url = url
         self.__apikey = apikey
         self.__secretkey = secretkey

@@ -10,11 +10,8 @@ Created on Sat Nov  4 11:09:11 2017
 from okexSpotAPI import OkexSpot
 from person import apikey, secretkey
 
-#初始化url
-okexRESTURL = 'www.okex.com'
-
 #现货API
-okexSpot = OkexSpot(okexRESTURL,apikey,secretkey)
+okexSpot = OkexSpot(apikey,secretkey)
 
 print (u' 现货行情 ')
 print (okexSpot.ticker('btc_usdt'))
