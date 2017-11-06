@@ -27,6 +27,7 @@ isSend = False
 
 while True:
     kLine = okexSpot.kLine(symbol,typeStr,size)
+    print(kLine)
     kLineLast = kLine[1]
     kLineEarly = kLine[0]
     
@@ -49,15 +50,14 @@ while True:
         misc.setConfigKeyValue('config.ini', 'global', 'low', low)
         content += '<p style="font-weight: bold; color: green;">最低价：%s</p>' % low
         isSend = True
-    if abs(change) > thresholdValue:
-        print('>')
-        if not change == changeValue:
-            changeValue = change
-            content += '<p>涨跌幅度：%s</p>' % str(round(change * 100, 4))+'%'
-            isSend = True
-    content += '</html>'
     print(change)
     print(changeValue)
+    if abs(change) > thresholdValue:
+        if not change == changeValue:
+            changeValue = change
+            content += '<p>一小时内涨跌幅度：%s</p>' % (str(round(change * 100, 4))+'%')
+            isSend = True
+    content += '</html>'
     if isSend:
         misc.sendEmail(mailHost, mailUser, mailPass, receivers, 'BTC_USDT最新报告', content)
         isSend = False
