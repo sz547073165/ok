@@ -57,10 +57,14 @@ def getConfigKeyValueByKeyName(fileName, section, keyName):
     else:
         return
 
-'''设置keyName和keyValue到配置文件，比较粗糙，没有用try、catch等等'''
+'''设置keyName和keyValue到配置文件，比较粗糙，暂时用try、catch检查'''
 def setConfigKeyValue(fileName, section, keyName, keyValue):
     conf = configparser.ConfigParser()
-    conf.read(fileName)
+    conf.read(fileName, 'utf-8')
+    try:
+        conf.add_section(section)
+    except:
+        pass
     conf.set(section, keyName, keyValue)
     conf.write(open(fileName,'w'))
 

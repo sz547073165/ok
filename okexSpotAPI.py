@@ -39,6 +39,20 @@ class OkexSpot:
             params = 'symbol=%(symbol)s' %{'symbol':symbol}
         return httpGet(self.__url,TRADES_RESOURCE,params)
     
+    #获取OKEx现货K线数据
+    def kLine(self,symbol = '',typeStr = '',size = '',since = ''):
+        TRADES_RESOURCE = "/api/v1/kline.do"
+        params=''
+        if symbol:
+            params = 'symbol=%(symbol)s' %{'symbol':symbol}
+        if typeStr:
+            params += '&type=%(type)s' %{'type':typeStr}
+        if size:
+            params += '&size=%(size)s' %{'size':size}
+        if since:
+            params += '&since=%(since)s' %{'since':since}
+        return httpGet(self.__url,TRADES_RESOURCE,params)
+    
     #获取用户现货账户信息
     def userinfo(self):
         USERINFO_RESOURCE = "/api/v1/userinfo.do"
