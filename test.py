@@ -38,26 +38,30 @@ while True:
     priceEarly = kLineEarly[4]
     change = (float(priceLast) / float(priceEarly)) - 1
     
+    subject = 'BTC_USDT'
     content = '<html>'
+    content += '<p>%s</p>' % misc.getTimeStr()
     
     if high > highValue:
         highValue = high
         misc.setConfigKeyValue('config.ini', 'global', 'high', high)
         content += '<p style="font-weight: bold; color: red;">最高价：%s</p>' % high
+        subject += '“最高价”'
         isSend = True
     if low < lowValue:
         lowValue = low
         misc.setConfigKeyValue('config.ini', 'global', 'low', low)
         content += '<p style="font-weight: bold; color: green;">最低价：%s</p>' % low
+        subject += '“最低价”'
         isSend = True
-    print(change)
-    print(changeValue)
     if abs(change) > thresholdValue:
         if not change == changeValue:
             changeValue = change
             content += '<p>一小时内涨跌幅度：%s</p>' % (str(round(change * 100, 4))+'%')
+            subject += '“涨跌幅”'
             isSend = True
     content += '</html>'
+    subject += '报告'
     if isSend:
         misc.sendEmail(mailHost, mailUser, mailPass, receivers, 'BTC_USDT最新报告', content)
         isSend = False
