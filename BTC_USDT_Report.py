@@ -20,7 +20,7 @@ lowValue = misc.getConfigKeyValueByKeyName('config.ini', 'global', 'low')
 okexSpot = OkexSpot(apikey,secretkey)
 symbol = 'btc_usdt'
 typeStr = '1hour'
-size = 2
+size = 5
 changeValue = 0
 thresholdValue = 0.01
 isSend = False
@@ -28,8 +28,8 @@ isSend = False
 while True:
     kLine = okexSpot.kLine(symbol,typeStr,size)
     print(kLine)
-    kLineLast = kLine[1]
-    kLineEarly = kLine[0]
+    kLineLast = kLine[-1]
+    kLineEarly = kLine[-2]
     
     timestampLast = kLineLast[0]/1000
     high = kLineLast[2]
@@ -60,8 +60,16 @@ while True:
             content += '<p>一小时内涨跌幅度：%s</p>' % (str(round(change * 100, 4))+'%')
             subject += '“涨跌幅”'
             isSend = True
+            ma5Value = misc.getMA5Line(kLine)[-1]
+            if float(kLine[-1][4]) > ma5Value:
+                content += '<p>当前价格%s > 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
+            if float(kLine[-1][4]) < ma5Value:
+                content += '<p>当前价格%s < 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
+            if float(kLine[-1][4]) == ma5Value:
+                content += '<p>当前价格%s = 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
     content += '</html>'
     subject += '报告'
+    
     if isSend:
         misc.sendEmail(mailHost, mailUser, mailPass, receivers, subject, content)
         isSend = False

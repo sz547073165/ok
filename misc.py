@@ -92,3 +92,15 @@ def getTimeStr():
 '''获取当前时间'''
 def getTimeStrWithUnixTimestamp(unixTimestamp):
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(unixTimestamp))
+
+'''获取五日均线'''
+def getMA5Line(kLine):
+    if len(kLine) < 5:
+        return
+    ma5Line = []
+    for i in range(len(kLine)-4):
+        closePriceSum = 0
+        for j in range(i, i + 5):
+            closePriceSum += float(kLine[j][4])
+        ma5Line.append(round(closePriceSum / 5, 4))
+    return ma5Line
