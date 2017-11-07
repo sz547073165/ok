@@ -63,7 +63,7 @@ while True:
     content += '</html>'
     subject += '报告'
     if isSend:
-        misc.sendEmail(mailHost, mailUser, mailPass, receivers, 'BTC_USDT最新报告', content)
+        misc.sendEmail(mailHost, mailUser, mailPass, receivers, subject, content)
         isSend = False
         time.sleep(60)
         continue
