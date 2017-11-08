@@ -27,6 +27,8 @@ isSend = False
 
 while True:
     kLine = okexSpot.kLine(symbol,typeStr,size)
+    if not kLine:
+        continue
     print(kLine)
     kLineLast = kLine[-1]
     kLineEarly = kLine[-2]
@@ -57,10 +59,14 @@ while True:
     if abs(change) > thresholdValue:
         if not change == changeValue:
             changeValue = change
-            content += '<p>一小时内涨跌幅度：%s</p>' % (str(round(change * 100, 4))+'%')
+            if change > 0:
+                value = '+' + str(round(change * 100, 4)) + '%'
+            else:
+                value = str(round(change * 100, 4)) + '%'
+            content += '<p>一小时内涨跌幅度：%s</p>' % value
             subject += '“涨跌幅”'
             isSend = True
-            ma5Value = misc.getMA5Line(kLine)[-1]
+            ma5Value = misc.getMALine(kLine, 5)[-1]
             if float(kLine[-1][4]) > ma5Value:
                 content += '<p>当前价格%s > 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
             if float(kLine[-1][4]) < ma5Value:

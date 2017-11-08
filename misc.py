@@ -28,7 +28,10 @@ def buildSign(params, secretKey):
 '''get请求'''
 def httpGet(url, resource, params=''):
     conn = http.client.HTTPSConnection(url, timeout=10)
-    conn.request('GET', resource + '?' + params)
+    try:
+        conn.request('GET', resource + '?' + params)
+    except:
+        return
     response = conn.getresponse()
     data = response.read().decode('utf-8')
     return json.loads(data)
@@ -40,7 +43,10 @@ def httpPost(url, resource, params):
     }
     conn = http.client.HTTPSConnection(url, timeout=10)
     temp_params = urllib.parse.urlencode(params)
-    conn.request('POST', resource, temp_params, headers)
+    try:
+        conn.request('POST', resource, temp_params, headers)
+    except:
+        return
     response = conn.getresponse()
     data = response.read().decode('utf-8')
     params.clear()
@@ -93,14 +99,14 @@ def getTimeStr():
 def getTimeStrWithUnixTimestamp(unixTimestamp):
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(unixTimestamp))
 
-'''获取五日均线'''
-def getMA5Line(kLine):
-    if len(kLine) < 5:
+'''获取均线，默认获取五日均线'''
+def getMALine(kLine, typeStr=5):
+    if len(kLine) < typeStr:
         return
     ma5Line = []
-    for i in range(len(kLine)-4):
+    for i in range(len(kLine)-typeStr+1):
         closePriceSum = 0
-        for j in range(i, i + 5):
-            closePriceSum += float(kLine[j][4])
-        ma5Line.append(round(closePriceSum / 5, 4))
+        for j in range(i, i + typeStr):
+            closePriceSum += float(kLine[j][typeStr-1])
+        ma5Line.append(round(closePriceSum / typeStr, 4))
     return ma5Line
