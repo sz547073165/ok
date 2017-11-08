@@ -110,3 +110,12 @@ def getMALine(kLine, typeStr=5):
             closePriceSum += float(kLine[j][typeStr-1])
         ma5Line.append(round(closePriceSum / typeStr, 4))
     return ma5Line
+
+'''获取斜率'''
+def getSlope(kLine):
+    if len(kLine) < 2:
+        return
+    slope = []
+    for i in range(len(kLine)-1):
+        slope.append(kLine[i+1]-kLine[i])
+    return slope

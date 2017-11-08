@@ -10,6 +10,5 @@ from okexSpotAPI import OkexSpot
 from person import apikey, secretkey, mailPass
 import misc
 
-aaa = misc.httpGet('localhost:8080','/api/v1/tickeeeer.do')
-print(aaa)
-    
+bbb = [1,2,3,1]
+print(misc.getSlope(bbb))

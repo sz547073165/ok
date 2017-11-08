@@ -66,13 +66,15 @@ while True:
             content += '<p>一小时内涨跌幅度：%s</p>' % value
             subject += '“涨跌幅”'
             isSend = True
-            ma5Value = misc.getMALine(kLine, 5)[-1]
-            if float(kLine[-1][4]) > ma5Value:
-                content += '<p>当前价格%s > 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
-            if float(kLine[-1][4]) < ma5Value:
-                content += '<p>当前价格%s < 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
-            if float(kLine[-1][4]) == ma5Value:
-                content += '<p>当前价格%s = 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
+            ma5ValueList = misc.getMALine(kLine, 5)
+            if ma5ValueList:
+                ma5Value = ma5ValueList[-1]
+                if float(kLine[-1][4]) > ma5Value:
+                    content += '<p>当前价格%s > 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
+                if float(kLine[-1][4]) < ma5Value:
+                    content += '<p>当前价格%s < 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
+                if float(kLine[-1][4]) == ma5Value:
+                    content += '<p>当前价格%s = 五日均线（%s周期)%s</p>' % (priceLast, typeStr, ma5Value)
     content += '</html>'
     subject += '报告'
     
