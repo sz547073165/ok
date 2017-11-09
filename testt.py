@@ -10,5 +10,16 @@ from okexSpotAPI import OkexSpot
 from person import apikey, secretkey, mailPass
 import misc
 
-bbb = [1,2,3,1]
-print(misc.getSlope(bbb))
+okexSpot = OkexSpot(apikey,secretkey)
+symbol = 'btc_usdt'
+typeStr = '1hour'
+size = 24
+
+kLine = okexSpot.kLine(symbol,typeStr,size)
+ma5 = misc.getMALine(kLine)
+ma5Slope = misc.getSlope(ma5)
+
+print('MA5：',ma5)
+print('MA5 slope：',ma5Slope)
+print(len(ma5))
+print(len(ma5Slope))

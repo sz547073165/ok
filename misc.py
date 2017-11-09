@@ -112,10 +112,10 @@ def getMALine(kLine, typeStr=5):
     return ma5Line
 
 '''获取斜率'''
-def getSlope(kLine):
-    if len(kLine) < 2:
+def getSlope(MALine):
+    if len(MALine) < 2:
         return
     slope = []
-    for i in range(len(kLine)-1):
-        slope.append(kLine[i+1]-kLine[i])
+    for i in range(len(MALine)-1):
+        slope.append(round(MALine[i+1]-MALine[i],4))
     return slope
