@@ -81,6 +81,6 @@ while True:
     if isSend:
         misc.sendEmail(mailHost, mailUser, mailPass, receivers, subject, content)
         isSend = False
-        time.sleep(60)
+        time.sleep(600)
         continue
     time.sleep(30)

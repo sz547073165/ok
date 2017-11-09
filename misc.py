@@ -76,10 +76,10 @@ def setConfigKeyValue(fileName, section, keyName, keyValue):
 
 '''发送邮件'''
 def sendEmail(mailHost, mailUser, mailPass, receivers, subject, content):
-    email_client = smtplib.SMTP(mailHost, 25)
-    email_client.login(mailUser, mailPass)
-    # create msg
     try:
+        email_client = smtplib.SMTP(mailHost, 25)
+        email_client.login(mailUser, mailPass)
+        # create msg
         msg = MIMEText(content, 'HTML', 'utf-8')
         msg['Subject'] = Header(subject, 'utf-8')  # subject
         msg['From'] = mailUser
